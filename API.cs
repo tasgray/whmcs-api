@@ -15,9 +15,19 @@ namespace WHMCS_API
         JsonSerializerSettings settings;
 
         private readonly Call _call;
-        public API(string Identifier, string Secret, string Url)
+        public API(string Identifier, string Secret, string Url) 
+            : this (Identifier, Secret, "", Url)
         {
-            _call = new Call(Identifier, Secret, Url);
+            
+        }
+
+        public API(string Identifier, string Secret, string AccessKey, string Url)
+        {
+            if(AccessKey == "") { 
+                _call = new Call(Identifier, Secret, Url);
+            } else {
+                _call = new Call(Identifier, Secret, AccessKey, Url);
+            }
             settings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
@@ -25,7 +35,7 @@ namespace WHMCS_API
             };
         }
 
-        
+
         public ValidateLogin.ValidateLogin ValidateLogin(string Email, string Password)
         {
             NameValueCollection data = new NameValueCollection()

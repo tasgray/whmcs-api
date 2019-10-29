@@ -14,18 +14,26 @@ namespace WHMCS_API
         private readonly string Identifier;
         private readonly string Secret;
         private readonly string Url;
+        private readonly string AccessKey;
 
-        
+
+
         public Call(string Identifier, string Secret, string Url)
+            : this(Identifier, Secret, "", Url)
+        {
+        }
+
+        public Call(string Identifier, string Secret, string AccessKey, string Url)
         {
             this.Identifier = Identifier;
             this.Secret = Secret;
+            this.AccessKey = AccessKey;
             this.Url = Url + "/includes/api.php";
         }
 
         private NameValueCollection BuildRequestData(NameValueCollection data)
         {
-            
+
             NameValueCollection request = new NameValueCollection()
             {
                 { "identifier", Identifier},
@@ -33,7 +41,12 @@ namespace WHMCS_API
                 { "responsetype", "json"}
             };
 
-            foreach(string key in data)
+            if(AccessKey != "")
+            {
+                request.Add("accesskey", AccessKey);
+            }
+
+            foreach (string key in data)
             {
                 request.Add(key, data[key]);
             }
