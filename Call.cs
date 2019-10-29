@@ -11,17 +11,15 @@ namespace WHMCS_API
 {
     public class Call
     {
-        private readonly string Username;
-        private readonly string Password;
-        private readonly string AccessKey;
+        private readonly string Identifier;
+        private readonly string Secret;
         private readonly string Url;
 
         
-        public Call(string Username, string Password, string AccessKey, string Url)
+        public Call(string Identifier, string Secret, string Url)
         {
-            this.Username = Username;
-            this.Password = CalculateMD5Hash(Password);
-            this.AccessKey = AccessKey;
+            this.Identifier = Identifier;
+            this.Secret = Secret;
             this.Url = Url + "/includes/api.php";
         }
 
@@ -30,9 +28,8 @@ namespace WHMCS_API
             
             NameValueCollection request = new NameValueCollection()
             {
-                { "username", Username},
-                { "password", Password},
-                { "accesskey", AccessKey },
+                { "identifier", Identifier},
+                { "secret", Secret},
                 { "responsetype", "json"}
             };
 
@@ -61,19 +58,6 @@ namespace WHMCS_API
             return Encoding.ASCII.GetString(webResponse);
         }
 
-        private string CalculateMD5Hash(string input)
-        {
-            MD5 md5 = MD5.Create();
-            byte[] inputBytes = Encoding.ASCII.GetBytes(input);
-            byte[] hash = md5.ComputeHash(inputBytes);
-
-            StringBuilder sb = new StringBuilder();
-            foreach (byte t in hash)
-            {
-                sb.Append(t.ToString("x2"));
-            }
-            return sb.ToString();
-        }
-        
+       
     }
 }

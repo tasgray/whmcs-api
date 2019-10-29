@@ -15,9 +15,9 @@ namespace WHMCS_API
         JsonSerializerSettings settings;
 
         private readonly Call _call;
-        public API(string Username, string Password, string AccessKey, string Url)
+        public API(string Identifier, string Secret, string Url)
         {
-            _call = new Call(Username, Password, AccessKey, Url);
+            _call = new Call(Identifier, Secret, Url);
             settings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
